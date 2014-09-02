@@ -14,9 +14,10 @@ public class Laser extends Line {
 	private Pane rootPane;
 	
 	//constructor
-	public Laser(int startX,int startY,int endX,int endY,boolean isDashed, Pane root){
-		//send the starting and ending coordinates to the parent class 'Line'
-		super(startX,startY,endX,endY);
+	public Laser(int[] coords,boolean isDashed, Pane root){
+		//coords consists of a startX,startY,endX, and endY
+		//send the coordinates to create a super 'Line'
+		super(coords[0],coords[1],coords[2],coords[3]);
         this.setStrokeWidth(5);
         this.setStroke(Color.BLACK);
         if (isDashed){
@@ -26,7 +27,10 @@ public class Laser extends Line {
         rootPane = root;
         root.getChildren().add(this);
 	}
+	
 	public void remove(){
 		rootPane.getChildren().remove(this);
 	}
+	
+
 }
