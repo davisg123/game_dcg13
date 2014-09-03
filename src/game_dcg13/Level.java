@@ -60,9 +60,9 @@ public class Level {
 	    	}
 	        //generate a laser from mirror man's static location to the click location
         	//only generate if the click is on the game area (above mirror man)
-        	if ((int)event.getY() < 270){
+        	if ((int)event.getY() < 260){
         		//coords consists of a startX,startY,endX, and endY
-        		int[] coords = createExtendedLine(150,270,(int)event.getX(),(int)event.getY());
+        		int[] coords = createExtendedLine(150,265,(int)event.getX(),(int)event.getY());
                 laserLine = new Laser(coords,true,rootPane);
         	}
     	}
