@@ -51,12 +51,15 @@ public class Laser extends Line {
 	
 	public Point closestPointToSelf(Point a, Point b){
 		Point myStartPoint = new Point(this.startXProperty().getValue().intValue(), this.startYProperty().getValue().intValue());
-		double distanceofA = Math.sqrt((a.x - myStartPoint.x)^2 + (a.y - myStartPoint.y)^2);
-		double distanceofB = Math.sqrt((b.x - myStartPoint.x)^2 + (b.y - myStartPoint.y)^2);
+		System.out.println(myStartPoint);
+		double distanceofA = Math.sqrt(Math.pow(a.x - myStartPoint.x,2) + Math.pow(a.y - myStartPoint.y,2));
+		double distanceofB = Math.sqrt(Math.pow(b.x - myStartPoint.x,2) + Math.pow(b.y - myStartPoint.y,2));
 		if (distanceofA < distanceofB){
+			System.out.println("a is closer");
 			return a;
 		}
 		else{
+			System.out.println("b is closer");
 			return b;
 		}
 	}

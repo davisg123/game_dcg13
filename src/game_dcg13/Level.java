@@ -19,6 +19,7 @@ public class Level {
         generateLine(125,270,175,270,true,root);
         generateLine(30,270,125,270,false,root);
         generateLine(175,270,270,270,false,root);
+        generateLine(50,75,75,75,false,root);
         //detect drag event
         handleDragOnPane(rootPane);
 	}
