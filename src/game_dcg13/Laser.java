@@ -16,9 +16,11 @@ import javafx.scene.shape.Line;
 
 public class Laser extends Line {
 	private Pane rootPane;
-	private int myReflectionNumber;		//the reflection number of this laser		
+	private int myReflectionNumber;		//the reflection number of this laser	
+	private Laser childLaser;
+	private Mirror myCollidingMirror;
 	//constructor
-	public Laser(int[] coords,int reflectionNumber,boolean isDashed, Pane root){
+	public Laser(int[] coords,int reflectionNumber,boolean isDashed, Pane root, Mirror collisionMirror){
 		//coords consists of a startX,startY,endX, and endY
 		//send the coordinates to create a super 'Line'
 		super(coords[0],coords[1],coords[2],coords[3]);
@@ -28,25 +30,30 @@ public class Laser extends Line {
             this.getStrokeDashArray().addAll(2d);
             this.setStrokeWidth(1);
         }
-        if (reflectionNumber < 5){
+        myCollidingMirror = collisionMirror;
+        myReflectionNumber = reflectionNumber;
+        if (myReflectionNumber < 5){
         	//to avoid an infinite amount of bounces off mirrors, we limit number of reflections to 5
-	        myReflectionNumber = reflectionNumber;
 	        rootPane = root;
 	        root.getChildren().add(this);
 	        checkForCollisionsAndTrimLine();
         }
 	}
 	
+	public boolean isValidReflection(){
+		//check if this reflection is eligible, if it isn't the object won't be shown on screen
+		return myReflectionNumber < 5;
+	}
 
 	public void checkForCollisionsAndTrimLine(){
 		Point closestIntersectingPoint = new Point(Integer.MAX_VALUE,Integer.MAX_VALUE);
 		Node closestIntersectedNode = null;
 	    for(Node n : rootPane.getChildren()){
-	        if (n != this && n.getBoundsInParent().intersects(this.getBoundsInParent())){
+	        if (n != this && n.getBoundsInParent().intersects(this.getBoundsInParent()) && n != myCollidingMirror){
 	        	//if we can determine the point of intersection, see if it's the closest point
 	        	Point intersectPoint = determinePointOfIntersection(n);
 	        	if (intersectPoint != null){
-	        		if (distanceFromSelf(intersectPoint) < distanceFromSelf(closestIntersectingPoint)){
+	        		if (distanceFromSelf(intersectPoint) < distanceFromSelf(closestIntersectingPoint) && !(n instanceof Laser)){
 	        			//we have a closer intersecting point
 	        			closestIntersectingPoint = intersectPoint;
 	        			closestIntersectedNode = n;
@@ -59,7 +66,8 @@ public class Laser extends Line {
 	    this.setEndY(closestIntersectingPoint.y);
 	    //if the intersected node is a mirror, we need to create a reflection
     	if (closestIntersectedNode instanceof Mirror){
-    		createReflection();
+    		//cast node as a mirror
+    		createReflection(closestIntersectingPoint, (Mirror)closestIntersectedNode);
     	}
 	}
 	
@@ -144,12 +152,50 @@ public class Laser extends Line {
 		return result;
 	}
 	
-	public void createReflection(){
+	public double slopeOfLine(Line aLine){
+		//get the slope (rise / run)
+		double rise = aLine.endYProperty().getValue() - aLine.startYProperty().getValue();
+		double run = aLine.endXProperty().getValue() - aLine.startXProperty().getValue();
+		return rise/run;
+	}
+	
+	public void createReflection(Point collisionPoint, Mirror collisionMirror){
+		//reflected slope is given by c = (a*b^2-a+2*b)/(-b^2+1+2*b*a)
+		double mySlope = slopeOfLine(this);
+		double mirrorSlope = slopeOfLine(collisionMirror);
+		double reflectingSlope = (mySlope*Math.pow(mirrorSlope,2)-mySlope+2*mirrorSlope)/(-Math.pow(mirrorSlope,2)+1+2*mySlope*mirrorSlope);
+		//now we make a new laser, using the calculated slope
+		//with a start point at the collision point
+		//we make up another point at an arbitrary distance along our line
+		//this point is either (x+300, y+m*300) or (x-300, y-m*300) depending on...
+		//which result puts the reflected line on the same side of the mirror as our original line
+		//make sense?  good...
+		//begin smelly code
+		Point myStart = new Point();
+		myStart.x = this.startXProperty().getValue().intValue();
+		myStart.y = this.startYProperty().getValue().intValue();
+		Point end = new Point();
+		end.x = collisionPoint.x+300;
+		end.y = collisionPoint.y+(int)(reflectingSlope*300);
+		if(LineOps.isLeft(collisionMirror,end) != LineOps.isLeft(collisionMirror,myStart)){
+			end.x = collisionPoint.x-300;
+			end.y = collisionPoint.y-(int)(reflectingSlope*300);
+		};
+
+		//end smelly code
 		
+
+		int[] coords = {collisionPoint.x,collisionPoint.y,end.x,end.y};
+		childLaser = new Laser(coords,myReflectionNumber+1,true,rootPane,collisionMirror);
 	}
 	
 	public void remove(){
-		rootPane.getChildren().remove(this);
+	    rootPane.getChildren().remove(this);
+	    
+	    //make sure the child laser exists and is valid before removing it
+		if (childLaser != null && childLaser.isValidReflection()){
+			childLaser.remove();
+		}
 	}
 	
 
