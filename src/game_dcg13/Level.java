@@ -1,30 +1,29 @@
 package game_dcg13;
 
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
-public class Level {
+public class Level extends Parent{
 	private static Laser laserLine;				///the current line that represents the laser beam
-	private static Pane rootPane;
 	
-	public Level(Pane root){
-		rootPane = root;
+	public Level(){
 		//setup game boundary
-        generateLine(30,30,270,30,false,root);
-        generateLine(30,30,30,270,false,root);        
-        generateLine(270,30,270,270,false,root);
-        generateLine(125,270,175,270,true,root);
-        generateLine(30,270,125,270,false,root);
-        generateLine(175,270,270,270,false,root);
-        new Mirror(50,75,75,100,root,Color.BLACK);
-        //detect drag event
-        handleDragOnPane(rootPane);
+        generateLine(30,30,270,30,false);
+        generateLine(30,30,30,270,false);        
+        generateLine(270,30,270,270,false);
+        generateLine(125,270,175,270,true);
+        generateLine(30,270,125,270,false);
+        generateLine(175,270,270,270,false);
+        new Mirror(50,75,75,100,this,Color.BLACK);
 	}
 	
-    private static Line generateLine(int startX, int startY, int endX, int endY, Boolean isDashed, Pane root){
+    private Line generateLine(int startX, int startY, int endX, int endY, Boolean isDashed){
         Line aLine = new Line(startX,startY,endX,endY);
         aLine.setStrokeWidth(5);
         aLine.setStroke(Color.BLACK);
@@ -32,26 +31,19 @@ public class Level {
             aLine.getStrokeDashArray().addAll(2d);
             aLine.setStrokeWidth(1);
         }
-        root.getChildren().add(aLine);
+        getChildren().add(aLine);
         return aLine;
     }
     
-    private static void handleDragOnPane(Pane root){
-    	root.onMouseDraggedProperty().set(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-            	handleMouseEvent(event);
-            }
-        });
-    	root.onMouseReleasedProperty().set(new EventHandler<MouseEvent>() {
-    		@Override
-    		public void handle(MouseEvent event) {
-    			handleMouseEvent(event);
-    		}
-    	});
+    public void addNode(Node n){
+    	getChildren().add(n);
     }
     
-    private static void handleMouseEvent(MouseEvent event){
+    public ObservableList<Node> getChildrenFromLevel(){
+    	return getChildren();
+    }
+    
+    public void handleMouseEvent(MouseEvent event){
     	if (laserLine != null){
     		//remove the previous laser
     		laserLine.remove();
@@ -62,7 +54,7 @@ public class Level {
         	if ((int)event.getY() < 260){
         		//coords consists of a startX,startY,endX, and endY
         		int[] coords = LineOps.extendLine(150,265,(int)event.getX(),(int)event.getY());
-                laserLine = new Laser(coords,0,true,rootPane,null);
+                laserLine = new Laser(coords,0,true,this,null);
         	}
     	}
     }

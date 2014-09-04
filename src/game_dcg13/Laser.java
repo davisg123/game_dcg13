@@ -15,12 +15,12 @@ import javafx.scene.shape.Line;
 
 
 public class Laser extends Line {
-	private Pane rootPane;
+	private Level level;
 	private int myReflectionNumber;		//the reflection number of this laser	
 	private Laser childLaser;
 	private Mirror myCollidingMirror;
 	//constructor
-	public Laser(int[] coords,int reflectionNumber,boolean isDashed, Pane root, Mirror collisionMirror){
+	public Laser(int[] coords,int reflectionNumber,boolean isDashed, Level l, Mirror collisionMirror){
 		//coords consists of a startX,startY,endX, and endY
 		//send the coordinates to create a super 'Line'
 		super(coords[0],coords[1],coords[2],coords[3]);
@@ -34,8 +34,8 @@ public class Laser extends Line {
         myReflectionNumber = reflectionNumber;
         if (myReflectionNumber < 5){
         	//to avoid an infinite amount of bounces off mirrors, we limit number of reflections to 5
-	        rootPane = root;
-	        root.getChildren().add(this);
+	        level = l;
+	        level.addNode(this);
 	        checkForCollisionsAndTrimLine();
         }
 	}
@@ -48,7 +48,7 @@ public class Laser extends Line {
 	public void checkForCollisionsAndTrimLine(){
 		Point closestIntersectingPoint = new Point(Integer.MAX_VALUE,Integer.MAX_VALUE);
 		Node closestIntersectedNode = null;
-	    for(Node n : rootPane.getChildren()){
+	    for(Node n : level.getChildrenFromLevel()){
 	        if (n != this && n.getBoundsInParent().intersects(this.getBoundsInParent()) && n != myCollidingMirror){
 	        	//if we can determine the point of intersection, see if it's the closest point
 	        	Point intersectPoint = determinePointOfIntersection(n);
@@ -186,11 +186,11 @@ public class Laser extends Line {
 		
 
 		int[] coords = {collisionPoint.x,collisionPoint.y,end.x,end.y};
-		childLaser = new Laser(coords,myReflectionNumber+1,true,rootPane,collisionMirror);
+		childLaser = new Laser(coords,myReflectionNumber+1,true,level,collisionMirror);
 	}
 	
 	public void remove(){
-	    rootPane.getChildren().remove(this);
+	    level.getChildrenFromLevel().remove(this);
 	    
 	    //make sure the child laser exists and is valid before removing it
 		if (childLaser != null && childLaser.isValidReflection()){

@@ -6,12 +6,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class Mirror extends Line{
-	public Mirror(int startX, int startY, int endX, int endY, Pane root,Color color){
+	public Mirror(int startX, int startY, int endX, int endY, Level level,Color color){
 		//coords consists of a startX,startY,endX, and endY
 		//send the coordinates to create a super 'Line'
 		super(startX,startY,endX,endY);
         this.setStrokeWidth(5);
         this.setStroke(color);
-	    root.getChildren().add(this);
+	    level.getChildrenFromLevel().add(this);
 	}
 }
