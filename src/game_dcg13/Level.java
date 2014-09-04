@@ -1,6 +1,5 @@
 package game_dcg13;
 
-import java.awt.Point;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -12,7 +11,6 @@ import javafx.scene.shape.Line;
 public class Level extends Parent{
 	private static Laser laserLine;				///the current line that represents the laser beam
 	private static boolean levelShouldHandleMouseEvents = true;		///indicates whether we should generating a laser on mouse event
-	public Target levelTarget;
 	private Main myGameController;
 	private int myLevelNum;
 	
@@ -35,7 +33,7 @@ public class Level extends Parent{
 	
 	public void setupLevel(int levelNum){
         new Mirror(50,100,75,75,this,Color.GREEN);
-        levelTarget = new Target(200,90,200,70,this,Color.GREEN);
+        new Target(200,90,200,70,this,Color.GREEN);
 	}
 	
     private Line generateLine(int startX, int startY, int endX, int endY, Boolean isDashed){

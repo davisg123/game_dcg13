@@ -51,6 +51,8 @@ public class Main extends Application {
     }
     
     public void loadLevel(int levelNum){
+    	String title = String.format("Mirror Man Level %d", levelNum+1);
+    	myStage.setTitle(title);
     	currentLevel = new Level(levelNum,this);
     	rootPane.getChildren().add(currentLevel);
     	handleDragOnSelf();
