@@ -39,15 +39,15 @@ public class GameController extends Application {
                 	//get rid of splash
                 	rootPane.getChildren().remove(mySplash);
                 	//load first level
-                	loadLevel();
+                	loadLevel(0);
                 }
             }
         });
        
     }
     
-    public void loadLevel(){
-    	currentLevel = new Level();
+    public void loadLevel(int levelNum){
+    	currentLevel = new Level(levelNum);
     	rootPane.getChildren().add(currentLevel);
     	handleDragOnSelf();
     }
