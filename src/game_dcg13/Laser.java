@@ -21,16 +21,19 @@ public class Laser extends Line {
 	private Mirror myCollidingMirror;
 	//constructor
 	public Laser(int[] coords,int reflectionNumber,boolean isDashed, Level l, Mirror collisionMirror){
-		//coords consists of a startX,startY,endX, and endY
+		//coordinates consists of a startX,startY,endX, and endY
 		//send the coordinates to create a super 'Line'
 		super(coords[0],coords[1],coords[2],coords[3]);
         this.setStrokeWidth(5);
-        this.setStroke(Color.BLACK);
         if (isDashed){
             this.getStrokeDashArray().addAll(2d);
             this.setStrokeWidth(1);
         }
-        myCollidingMirror = collisionMirror;
+    	myCollidingMirror = collisionMirror;
+        if (myCollidingMirror != null){
+        	//laser assumes the color of the mirror it reflected off of
+        	this.setStroke(myCollidingMirror.getStroke());
+        }
         myReflectionNumber = reflectionNumber;
         if (myReflectionNumber < 5){
         	//to avoid an infinite amount of bounces off mirrors, we limit number of reflections to 5
@@ -49,7 +52,7 @@ public class Laser extends Line {
 		Point closestIntersectingPoint = new Point(Integer.MAX_VALUE,Integer.MAX_VALUE);
 		Node closestIntersectedNode = null;
 	    for(Node n : level.getChildrenFromLevel()){
-	        if (n != this && n.getBoundsInParent().intersects(this.getBoundsInParent()) && n != myCollidingMirror){
+	        if (n != this && this.getBoundsInParent().intersects(n.getBoundsInParent()) && n != myCollidingMirror){
 	        	//if we can determine the point of intersection, see if it's the closest point
 	        	Point intersectPoint = determinePointOfIntersection(n);
 	        	if (intersectPoint != null){
@@ -60,6 +63,10 @@ public class Laser extends Line {
 	        		}
 	        	}
 	        }
+	    }
+	    if (closestIntersectedNode instanceof Target){
+	    	//we might have won the game, check colors of laser and target
+	    	level.checkWinConditions((Target)closestIntersectedNode, this);
 	    }
 	    //update this laser to be cutoff at the closest obstruction
 	    this.setEndX(closestIntersectingPoint.x);

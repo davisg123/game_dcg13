@@ -10,7 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
  
-public class GameController extends Application {
+public class Main extends Application {
 	private static Level currentLevel;
 	private static Stage myStage;
 	private static Pane rootPane;
@@ -43,11 +43,15 @@ public class GameController extends Application {
                 }
             }
         });
-       
+    }
+    
+    public void levelComplete(){
+    	rootPane.getChildren().remove(currentLevel);
+    	loadLevel(currentLevel.getLevelNum()+1);
     }
     
     public void loadLevel(int levelNum){
-    	currentLevel = new Level(levelNum);
+    	currentLevel = new Level(levelNum,this);
     	rootPane.getChildren().add(currentLevel);
     	handleDragOnSelf();
     }

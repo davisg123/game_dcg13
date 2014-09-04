@@ -5,7 +5,6 @@ import java.awt.Point;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
@@ -15,7 +14,7 @@ public class Mirror extends Line{
 	final Point endDragDelta = new Point();
 	
 	public Mirror(int startX, int startY, int endX, int endY, Level level,Color color){
-		//coords consists of a startX,startY,endX, and endY
+		//coordinates consists of a startX,startY,endX, and endY
 		//send the coordinates to create a super 'Line'
 		super(startX,startY,endX,endY);
         this.setStrokeWidth(5);
@@ -45,7 +44,6 @@ public class Mirror extends Line{
 		    myMirror.setStartY(mouseEvent.getSceneY() + startDragDelta.y);
 		    myMirror.setEndX(mouseEvent.getSceneX() + endDragDelta.x);
 		    myMirror.setEndY(mouseEvent.getSceneY() + endDragDelta.y);
-		    System.out.println(myMirror.getBoundsInParent());
 		  }
 		});
 		this.setOnMouseReleased(new EventHandler<MouseEvent>() {
