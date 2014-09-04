@@ -10,8 +10,8 @@ public class LineOps {
 		//get the slope of the line
 		float m = (float)(startY-endY)/(startX-endX);
 		float b = startY - m*startX;
-		//we want y to be an extreme, either 0 (top of screen) or 300 (bottom)
-		int extendedY = m < 0 ? 300 : 0;
+		//we want y to be at the top of the screen
+		int extendedY = 0;
 		int extendedX;
 		if (m == Float.POSITIVE_INFINITY){
 			//slope is infinity, so x stays the same
