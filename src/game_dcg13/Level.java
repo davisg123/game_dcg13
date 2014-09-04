@@ -19,7 +19,7 @@ public class Level {
         generateLine(125,270,175,270,true,root);
         generateLine(30,270,125,270,false,root);
         generateLine(175,270,270,270,false,root);
-        generateLine(50,75,75,75,false,root);
+        new Mirror(50,75,75,75,root,Color.BLACK);
         //detect drag event
         handleDragOnPane(rootPane);
 	}
@@ -64,7 +64,7 @@ public class Level {
         	if ((int)event.getY() < 260){
         		//coords consists of a startX,startY,endX, and endY
         		int[] coords = createExtendedLine(150,265,(int)event.getX(),(int)event.getY());
-                laserLine = new Laser(coords,true,rootPane);
+                laserLine = new Laser(coords,0,true,rootPane);
         	}
     	}
     }

@@ -16,9 +16,9 @@ import javafx.scene.shape.Line;
 
 public class Laser extends Line {
 	private Pane rootPane;
-	
+	private int myReflectionNumber;		//the reflection number of this laser		
 	//constructor
-	public Laser(int[] coords,boolean isDashed, Pane root){
+	public Laser(int[] coords,int reflectionNumber,boolean isDashed, Pane root){
 		//coords consists of a startX,startY,endX, and endY
 		//send the coordinates to create a super 'Line'
 		super(coords[0],coords[1],coords[2],coords[3]);
@@ -28,40 +28,45 @@ public class Laser extends Line {
             this.getStrokeDashArray().addAll(2d);
             this.setStrokeWidth(1);
         }
-        rootPane = root;
-        root.getChildren().add(this);
-        checkCollisions();
+        if (reflectionNumber < 5){
+        	//to avoid an infinite amount of bounces off mirrors, we limit number of reflections to 5
+	        myReflectionNumber = reflectionNumber;
+	        rootPane = root;
+	        root.getChildren().add(this);
+	        checkForCollisionsAndTrimLine();
+        }
 	}
 	
 
-	public void checkCollisions(){
+	public void checkForCollisionsAndTrimLine(){
 		Point closestIntersectingPoint = new Point(Integer.MAX_VALUE,Integer.MAX_VALUE);
+		Node closestIntersectedNode = null;
 	    for(Node n : rootPane.getChildren()){
 	        if (n != this && n.getBoundsInParent().intersects(this.getBoundsInParent())){
 	        	//if we can determine the point of intersection, see if it's the closest point
 	        	Point intersectPoint = determinePointOfIntersection(n);
 	        	if (intersectPoint != null){
-	        		closestIntersectingPoint = closestPointToSelf(closestIntersectingPoint,intersectPoint);
+	        		if (distanceFromSelf(intersectPoint) < distanceFromSelf(closestIntersectingPoint)){
+	        			//we have a closer intersecting point
+	        			closestIntersectingPoint = intersectPoint;
+	        			closestIntersectedNode = n;
+	        		}
 	        	}
 	        }
 	    }
+	    //update this laser to be cutoff at the closest obstruction
 	    this.setEndX(closestIntersectingPoint.x);
 	    this.setEndY(closestIntersectingPoint.y);
+	    //if the intersected node is a mirror, we need to create a reflection
+    	if (closestIntersectedNode instanceof Mirror){
+    		createReflection();
+    	}
 	}
 	
-	public Point closestPointToSelf(Point a, Point b){
+	public double distanceFromSelf(Point a){
 		Point myStartPoint = new Point(this.startXProperty().getValue().intValue(), this.startYProperty().getValue().intValue());
-		System.out.println(myStartPoint);
-		double distanceofA = Math.sqrt(Math.pow(a.x - myStartPoint.x,2) + Math.pow(a.y - myStartPoint.y,2));
-		double distanceofB = Math.sqrt(Math.pow(b.x - myStartPoint.x,2) + Math.pow(b.y - myStartPoint.y,2));
-		if (distanceofA < distanceofB){
-			System.out.println("a is closer");
-			return a;
-		}
-		else{
-			System.out.println("b is closer");
-			return b;
-		}
+		double distance = Math.sqrt(Math.pow(a.x - myStartPoint.x,2) + Math.pow(a.y - myStartPoint.y,2));
+		return distance;
 	}
 	
 	public Point determinePointOfIntersection(Node n){
@@ -137,6 +142,10 @@ public class Laser extends Line {
 		result.x = pt1.x + pt2.x;
 		result.y = pt1.y + pt2.y;
 		return result;
+	}
+	
+	public void createReflection(){
+		
 	}
 	
 	public void remove(){
