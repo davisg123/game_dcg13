@@ -6,6 +6,12 @@ First project for CompSci 308 Spring 2014
 ###Genre
 Puzzle Game
 
+###GamePlay
+Drag anywhere in the play area to generate a laser.  This laser reflects off of any mirror.  Mirrors can be dragged around the screen.  The goal is to have the laser hit the target (which looks like a door).  The laser changes color when it hits a mirror.  The color of the laser must match the color of the target to win the level.
+
+###Cheat Code
+Press 'S' on any level to view the winning mirror configuration.
+
 ###Back Story
 Mirror Man has been trapped for as long as he can remember.  He travels through rooms, each one containing a locked colored door and several colored mirrors.  Mirror Man opens a door by arranging the mirrors around the room and then shooting his lazer gun at a correct angle to cause the correctly colored beam of light to hit the door and allow him to enter the next room.
 
