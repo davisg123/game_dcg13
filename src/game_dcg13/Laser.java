@@ -1,10 +1,7 @@
 package game_dcg13;
 
 import java.awt.Point;
-import java.util.ArrayList;
-
 import javafx.scene.Node;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
@@ -108,10 +105,10 @@ public class Laser extends Line {
 			//4 points from 2 lines
 			//call these points p and p2 for the 1st line
 			//and q and q2 for the 2nd line
-			Point[] pPoints = createPointsFromLine((Line)n);
+			Point[] pPoints = LineOps.createPointsFromLine((Line)n);
 			Point p = pPoints[0];
 			Point p2 = pPoints[1];
-			Point[] qPoints = createPointsFromLine(this);
+			Point[] qPoints = LineOps.createPointsFromLine(this);
 			Point q = qPoints[0];
 			Point q2 = qPoints[1];
 			
@@ -138,15 +135,6 @@ public class Laser extends Line {
 		else{
 			return null;
 		}
-	}
-	
-	public Point[] createPointsFromLine(Line l){
-		int startPointX = l.startXProperty().getValue().intValue();
-		int startPointY = l.startYProperty().getValue().intValue();
-		int endPointX = l.endXProperty().getValue().intValue();
-		int endPointY = l.endYProperty().getValue().intValue();
-		Point[] points = {new Point(startPointX,startPointY), new Point(endPointX,endPointY)};
-		return points;
 	}
 	
 	public void createReflection(Point collisionPoint, Mirror collisionMirror){

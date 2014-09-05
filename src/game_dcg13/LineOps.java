@@ -25,6 +25,15 @@ public class LineOps {
 		return coords;
 	}
 	
+	public static Point[] createPointsFromLine(Line l){
+		int startPointX = l.startXProperty().getValue().intValue();
+		int startPointY = l.startYProperty().getValue().intValue();
+		int endPointX = l.endXProperty().getValue().intValue();
+		int endPointY = l.endYProperty().getValue().intValue();
+		Point[] points = {new Point(startPointX,startPointY), new Point(endPointX,endPointY)};
+		return points;
+	}
+	
 	public static boolean isLeft(Line theLine, Point c){
 		Point a = new Point();
 		a.x = theLine.startXProperty().getValue().intValue();

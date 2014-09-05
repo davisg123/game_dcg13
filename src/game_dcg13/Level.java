@@ -131,7 +131,7 @@ public class Level extends Parent{
 	        //generate a laser from mirror man's static location to the click location
         	//only generate if the click is on the game area (above mirror man)
         	if ((int)event.getY() < 260){
-        		//coords consists of a startX,startY,endX, and endY
+        		//coordinates consists of a startX,startY,endX, and endY
         		int[] coords = LineOps.extendLine(150,265,(int)event.getX(),(int)event.getY());
                 laserLine = new Laser(coords,0,true,this,null,null);
         	}
