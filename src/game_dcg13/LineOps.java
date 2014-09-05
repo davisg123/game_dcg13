@@ -35,4 +35,37 @@ public class LineOps {
 	    return ((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) > 0;
 	}
 	
+
+	/**
+	 * Calculate the cross product of the two points.
+	 */
+	public static float crossProduct(Point pt1, Point pt2) {
+		return pt1.x * pt2.y - pt1.y * pt2.x;
+	}
+
+	/**
+	 * Subtract the second point from the first.
+	 */ 
+	public static Point subtractPoints(Point pt1, Point pt2) {
+		Point result = new Point();
+		result.x = pt1.x - pt2.x;
+		result.y = pt1.y - pt2.y;
+
+		return result;
+	}
+	
+	public static Point addPoints(Point pt1, Point pt2) {
+		Point result = new Point();
+		result.x = pt1.x + pt2.x;
+		result.y = pt1.y + pt2.y;
+		return result;
+	}
+	
+	public static double slopeOfLine(Line aLine){
+		//get the slope (rise / run)
+		double rise = aLine.endYProperty().getValue() - aLine.startYProperty().getValue();
+		double run = aLine.endXProperty().getValue() - aLine.startXProperty().getValue();
+		return rise/run;
+	}
+	
 }

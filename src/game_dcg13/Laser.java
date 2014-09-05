@@ -115,21 +115,21 @@ public class Laser extends Line {
 			Point q = qPoints[0];
 			Point q2 = qPoints[1];
 			
-			Point r = subtractPoints(p2, p);
-			Point s = subtractPoints(q2, q);
+			Point r = LineOps.subtractPoints(p2, p);
+			Point s = LineOps.subtractPoints(q2, q);
 
-			float uNumerator = crossProduct(subtractPoints(q, p), r);
-			float denominator = crossProduct(r, s);
+			float uNumerator = LineOps.crossProduct(LineOps.subtractPoints(q, p), r);
+			float denominator = LineOps.crossProduct(r, s);
 
 			float u = uNumerator / denominator;
-			float t = crossProduct(subtractPoints(q, p), s) / denominator;
+			float t = LineOps.crossProduct(LineOps.subtractPoints(q, p), s) / denominator;
 
 			linesDoIntersect = (t >= 0) && (t <= 1) && (u >= 0) && (u <= 1) && denominator != 0;
 			if (linesDoIntersect){
 				//calculate the point of intersection by figuring out how long along one of the lines...
 				//we have to go to find the intersection
 				Point tr = new Point((int)(t*r.x),(int)(t*r.y));
-				return addPoints(p,tr);
+				return LineOps.addPoints(p,tr);
 			}
 			else{
 				return null;
@@ -148,43 +148,11 @@ public class Laser extends Line {
 		Point[] points = {new Point(startPointX,startPointY), new Point(endPointX,endPointY)};
 		return points;
 	}
-
-	/**
-	 * Calculate the cross product of the two points.
-	 */
-	public float crossProduct(Point pt1, Point pt2) {
-		return pt1.x * pt2.y - pt1.y * pt2.x;
-	}
-
-	/**
-	 * Subtract the second point from the first.
-	 */ 
-	public Point subtractPoints(Point pt1, Point pt2) {
-		Point result = new Point();
-		result.x = pt1.x - pt2.x;
-		result.y = pt1.y - pt2.y;
-
-		return result;
-	}
-	
-	public Point addPoints(Point pt1, Point pt2) {
-		Point result = new Point();
-		result.x = pt1.x + pt2.x;
-		result.y = pt1.y + pt2.y;
-		return result;
-	}
-	
-	public double slopeOfLine(Line aLine){
-		//get the slope (rise / run)
-		double rise = aLine.endYProperty().getValue() - aLine.startYProperty().getValue();
-		double run = aLine.endXProperty().getValue() - aLine.startXProperty().getValue();
-		return rise/run;
-	}
 	
 	public void createReflection(Point collisionPoint, Mirror collisionMirror){
 		//reflected slope is given by c = (a*b^2-a+2*b)/(-b^2+1+2*b*a)
-		double mySlope = slopeOfLine(this);
-		double mirrorSlope = slopeOfLine(collisionMirror);
+		double mySlope = LineOps.slopeOfLine(this);
+		double mirrorSlope = LineOps.slopeOfLine(collisionMirror);
 		double reflectingSlope = (mySlope*Math.pow(mirrorSlope,2)-mySlope+2*mirrorSlope)/(-Math.pow(mirrorSlope,2)+1+2*mySlope*mirrorSlope);
 		//now we make a new laser, using the calculated slope
 		//with a start point at the collision point
