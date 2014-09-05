@@ -7,7 +7,7 @@ import javafx.scene.text.Text;
 public class Splash extends Parent {
 	public Splash(boolean isEndOfGame){
 		if (isEndOfGame){
-			Text endText = new Text(30, 25, "You Win! (Hard Huh?)  Currently Hiring Level Designers.");
+			Text endText = new Text(85, 25, "You Win! (Hard Huh?)");
 			getChildren().add(endText);
 		}
 		else{

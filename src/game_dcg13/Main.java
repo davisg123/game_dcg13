@@ -41,6 +41,12 @@ public class Main extends Application {
                 	//load first level
                 	loadLevel(0);
                 }
+                else if (ke.getCode() == KeyCode.S){
+                	//solve the level
+                	if (currentLevel != null){
+                		currentLevel.solve();
+                	}
+                }
             }
         });
     }

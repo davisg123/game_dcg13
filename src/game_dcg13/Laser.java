@@ -55,7 +55,7 @@ public class Laser extends Line {
 		//combine the colors of the mirror we hit and the previous laser
 		//TODO: more color combinations
 		//level design only combines one color (purple and green), so return blue
-		return Color.BLUE;
+		return Color.AQUA;
 	}
 	
 	public boolean isValidReflection(){
