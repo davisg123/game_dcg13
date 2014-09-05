@@ -19,8 +19,9 @@ public class Laser extends Line {
 	private int myReflectionNumber;		//the reflection number of this laser	
 	private Laser childLaser;
 	private Mirror myCollidingMirror;
+	private Color parentColor;
 	//constructor
-	public Laser(int[] coords,int reflectionNumber,boolean isDashed, Level l, Mirror collisionMirror){
+	public Laser(int[] coords,int reflectionNumber,boolean isDashed, Level l, Mirror collisionMirror, Color inheritedColor){
 		//coordinates consists of a startX,startY,endX, and endY
 		//send the coordinates to create a super 'Line'
 		super(coords[0],coords[1],coords[2],coords[3]);
@@ -30,9 +31,16 @@ public class Laser extends Line {
             this.setStrokeWidth(1);
         }
     	myCollidingMirror = collisionMirror;
+    	parentColor = inheritedColor;
         if (myCollidingMirror != null){
         	//laser assumes the color of the mirror it reflected off of
-        	this.setStroke(myCollidingMirror.getStroke());
+        	//color is combined with the child laser also
+        	if (parentColor != null && !parentColor.equals(Color.BLACK)){
+        		this.setStroke(combineColors());
+        	}
+        	else{
+            	this.setStroke(myCollidingMirror.getStroke());	
+        	}
         }
         myReflectionNumber = reflectionNumber;
         if (myReflectionNumber < 5){
@@ -41,6 +49,13 @@ public class Laser extends Line {
 	        level.addNode(this);
 	        checkForCollisionsAndTrimLine();
         }
+	}
+	
+	public Color combineColors(){
+		//combine the colors of the mirror we hit and the previous laser
+		//TODO: more color combinations
+		//level design only combines one color (purple and green), so return blue
+		return Color.BLUE;
 	}
 	
 	public boolean isValidReflection(){
@@ -193,7 +208,7 @@ public class Laser extends Line {
 		
 
 		int[] coords = {collisionPoint.x,collisionPoint.y,end.x,end.y};
-		childLaser = new Laser(coords,myReflectionNumber+1,true,level,collisionMirror);
+		childLaser = new Laser(coords,myReflectionNumber+1,true,level,collisionMirror,(Color) this.getStroke());
 	}
 	
 	public void remove(){

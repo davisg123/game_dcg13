@@ -27,7 +27,7 @@ public class Main extends Application {
         rootPane = new Pane();
 
         Scene myScene = new Scene(rootPane,300,300);
-        Splash mySplash = new Splash();
+        Splash mySplash = new Splash(false);
         rootPane.getChildren().add(mySplash);
         myStage.setScene(myScene);
         myStage.show();
@@ -50,12 +50,21 @@ public class Main extends Application {
     	loadLevel(currentLevel.getLevelNum()+1);
     }
     
+    public void gameComplete(){
+    	rootPane.getChildren().remove(currentLevel);
+    	Splash gameOverSplash = new Splash(true);
+    	rootPane.getChildren().add(gameOverSplash);
+    }
+    
     public void loadLevel(int levelNum){
-    	String title = String.format("Mirror Man Level %d", levelNum+1);
-    	myStage.setTitle(title);
-    	currentLevel = new Level(levelNum,this);
-    	rootPane.getChildren().add(currentLevel);
-    	handleDragOnSelf();
+    	//prevent duplicate level loading
+    	if (currentLevel == null || currentLevel.getLevelNum() != levelNum){
+        	String title = String.format("Mirror Man Level %d", levelNum+1);
+        	myStage.setTitle(title);
+        	currentLevel = new Level(levelNum,this);
+        	rootPane.getChildren().add(currentLevel);
+        	handleDragOnSelf();
+    	}
     }
     
     

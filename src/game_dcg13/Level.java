@@ -32,8 +32,24 @@ public class Level extends Parent{
 	}
 	
 	public void setupLevel(int levelNum){
-        new Mirror(50,100,75,75,this,Color.GREEN);
-        new Target(200,90,200,70,this,Color.GREEN);
+		switch(levelNum){
+		case 0:
+	        new Mirror(50,100,75,75,this,Color.GREEN);
+	        new Target(200,90,200,70,this,Color.GREEN);
+	        break;
+		case 1:
+	        new Mirror(40,200,65,225,this,Color.BLUE);
+	        new Target(200,90,200,70,this,Color.BLUE);
+	        break;
+		case 2:
+			new Mirror(40,200,65,225,this,Color.PURPLE);
+			new Mirror(40,240,65,265,this,Color.GREEN);
+			new Target(200,90,200,70,this,Color.BLUE);
+			break;
+		case 3:
+			myGameController.gameComplete();
+			break;
+		}
 	}
 	
     private Line generateLine(int startX, int startY, int endX, int endY, Boolean isDashed){
@@ -81,7 +97,7 @@ public class Level extends Parent{
         	if ((int)event.getY() < 260){
         		//coords consists of a startX,startY,endX, and endY
         		int[] coords = LineOps.extendLine(150,265,(int)event.getX(),(int)event.getY());
-                laserLine = new Laser(coords,0,true,this,null);
+                laserLine = new Laser(coords,0,true,this,null,null);
         	}
     	}
     }

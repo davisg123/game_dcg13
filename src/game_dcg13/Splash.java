@@ -5,10 +5,16 @@ import javafx.scene.text.Text;
 
 
 public class Splash extends Parent {
-	public Splash(){
-	      Text welcomeText = new Text(75, 25, "Welcome to Mirror Man");
-	      Text instructionText = new Text (70, 200, "Press Enter to Start Game");
-	      getChildren().add(welcomeText);
-	      getChildren().add(instructionText);
+	public Splash(boolean isEndOfGame){
+		if (isEndOfGame){
+			Text endText = new Text(30, 25, "You Win! (Hard Huh?)  Currently Hiring Level Designers.");
+			getChildren().add(endText);
+		}
+		else{
+			Text welcomeText = new Text(75, 25, "Welcome to Mirror Man");
+			Text promptText = new Text (70, 200, "Press Enter to Start Game");
+			getChildren().add(welcomeText);
+			getChildren().add(promptText);
+		}
 	}
 }
