@@ -3,6 +3,16 @@ Mirror Man
 
 First project for CompSci 308 Spring 2014
 
+###About
+
+Started August 28th, completed September 4th.  Total time: 8 hours.
+Project Author: Davis Gossage
+Used the Brick Breaker sample game as a starting point, no code was used from there.
+
+The javaFX Hello World project was the file that was used to start this project.
+
+Thoughts on the project: really enjoyed it, I loved the freedom involved with being able to create a game from scratch.
+
 ###Genre
 Puzzle Game
 
