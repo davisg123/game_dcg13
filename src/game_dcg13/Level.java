@@ -35,10 +35,6 @@ public abstract class Level extends Parent{
 	public abstract void setupLevel();
     public abstract void solve();
     
-    public void setLevelShouldHandleMouseEvents(boolean shouldHandle){
-    	levelShouldHandleMouseEvents = shouldHandle;
-    }
-    
     public void addNode(Node n){
     	getChildren().add(n);
     }
@@ -49,8 +45,14 @@ public abstract class Level extends Parent{
     	}
     }
     
+    //the parent method, getChildren() is not visible, so here's a helper method
     public ObservableList<Node> getChildrenFromLevel(){
     	return getChildren();
+    }
+    
+    //do we want to handle mouse events?
+    public void setLevelShouldHandleMouseEvents(boolean shouldHandle){
+    	levelShouldHandleMouseEvents = shouldHandle;
     }
     
     public void handleMouseEvent(MouseEvent event){
