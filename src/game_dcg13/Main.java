@@ -12,8 +12,15 @@ import javafx.stage.Stage;
  
 public class Main extends Application {
 	private static Level currentLevel;
+	private static int currentLevelIdx;
 	private static Stage myStage;
 	private static Pane rootPane;
+    private Level[] allLevels = 
+        {
+    		new LevelOne(this),
+    		new LevelTwo(this),
+    		new LevelThree(this),
+        };
 	
     public static void main(String[] args) {
         launch(args);
@@ -53,21 +60,25 @@ public class Main extends Application {
     
     public void levelComplete(){
     	rootPane.getChildren().remove(currentLevel);
-    	loadLevel(currentLevel.getLevelNum()+1);
+    	loadLevel(currentLevelIdx + 1);
     }
     
     public void gameComplete(){
     	rootPane.getChildren().remove(currentLevel);
+    	myStage.setTitle("Game Complete");
     	Splash gameOverSplash = new Splash(true);
     	rootPane.getChildren().add(gameOverSplash);
     }
     
     public void loadLevel(int levelNum){
-    	//prevent duplicate level loading
-    	if (currentLevel == null || currentLevel.getLevelNum() != levelNum){
+    	if (levelNum > 2){
+    		gameComplete();
+    	}
+    	else{
+        	currentLevelIdx = levelNum;
         	String title = String.format("Mirror Man Level %d", levelNum+1);
         	myStage.setTitle(title);
-        	currentLevel = new Level(levelNum,this);
+        	currentLevel = allLevels[levelNum];
         	rootPane.getChildren().add(currentLevel);
         	handleDragOnSelf();
     	}

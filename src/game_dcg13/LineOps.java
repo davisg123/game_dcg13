@@ -2,6 +2,7 @@ package game_dcg13;
 
 import java.awt.Point;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class LineOps {
@@ -76,5 +77,17 @@ public class LineOps {
 		double run = aLine.endXProperty().getValue() - aLine.startXProperty().getValue();
 		return rise/run;
 	}
+	
+	
+    protected static Line generateLine(int startX, int startY, int endX, int endY, Boolean isDashed){
+        Line aLine = new Line(startX,startY,endX,endY);
+        aLine.setStrokeWidth(5);
+        aLine.setStroke(Color.BLACK);
+        if (isDashed){
+            aLine.getStrokeDashArray().addAll(2d);
+            aLine.setStrokeWidth(1);
+        }
+        return aLine;
+    }
 	
 }
