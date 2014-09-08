@@ -24,12 +24,12 @@ public abstract class Level extends Parent{
 	public void setupBoundary(){
 		//these should be in a property list to avoid repeated code
 		//setup game boundary, generate line takes starting and ending coordinates
-        addNode(LineOps.generateLine(30,30,270,30,false));
-        addNode(LineOps.generateLine(30,30,30,270,false));        
-        addNode(LineOps.generateLine(270,30,270,270,false));
-        addNode(LineOps.generateLine(125,270,175,270,true));
-        addNode(LineOps.generateLine(30,270,125,270,false));
-        addNode(LineOps.generateLine(175,270,270,270,false));
+        addNode(LineOps.generateLine(30,30,270,30));
+        addNode(LineOps.generateLine(30,30,30,270));        
+        addNode(LineOps.generateLine(270,30,270,270));
+        addNode(LineOps.generateDashedLine(125,270,175,270));
+        addNode(LineOps.generateLine(30,270,125,270));
+        addNode(LineOps.generateLine(175,270,270,270));
 	}
 	
 	public abstract void setupLevel();

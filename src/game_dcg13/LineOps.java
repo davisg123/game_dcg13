@@ -79,7 +79,15 @@ public class LineOps {
 	}
 	
 	
-    protected static Line generateLine(int startX, int startY, int endX, int endY, Boolean isDashed){
+    protected static Line generateLine(int startX, int startY, int endX, int endY){
+    	return internalLineGeneration(startX,startY,endX,endY,false);
+    }
+    
+    protected static Line generateDashedLine(int startX, int startY, int endX, int endY){
+    	return internalLineGeneration(startX,startY,endX,endY,true);
+    }
+    
+    private static Line internalLineGeneration(int startX, int startY, int endX, int endY, Boolean isDashed){
         Line aLine = new Line(startX,startY,endX,endY);
         aLine.setStrokeWidth(5);
         aLine.setStroke(Color.BLACK);
