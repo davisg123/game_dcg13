@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece.
+// Davis Gossage
+
 package game_dcg13;
 
 
@@ -22,7 +25,7 @@ public abstract class Level extends Parent{
 	}
 	
 	public void setupBoundary(){
-		//these should be in a property list to avoid repeated code
+		//these should be moved to a property list to avoid repeated code
 		//setup game boundary, generate line takes starting and ending coordinates
         addNode(LineOps.generateLine(30,30,270,30));
         addNode(LineOps.generateLine(30,30,30,270));        
@@ -65,6 +68,7 @@ public abstract class Level extends Parent{
         	//only generate if the click is on the game area (above mirror man)
         	if ((int)event.getY() < 260){
         		//coordinates consists of a startX,startY,endX, and endY
+        		//the startX and startY are static (mirror man's position)
         		int[] coords = LineOps.extendLine(150,265,(int)event.getX(),(int)event.getY());
                 laserLine = new Laser(coords,0,true,this,null,null);
         	}

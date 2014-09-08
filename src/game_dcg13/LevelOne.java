@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece.
+// Davis Gossage
+
 package game_dcg13;
 
 import javafx.scene.paint.Color;
